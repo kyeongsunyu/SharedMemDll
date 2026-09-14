@@ -113,6 +113,9 @@ void CMemComm::Decode()
 	case CMD_READ_DEVICEDATA:
 		RDEV = RxBuffer.Arg.Device;
 		break;
+	case CMD_READ_SCANTRIGGER_DISPLAY:
+		RScanTriggerDisplay = RxBuffer.Arg.ScanTriggerDisplay;
+		break;
 	case CMD_READ_3POINT_OFFSET:
 		RSet3Point = RxBuffer.Arg.Set3Point;
 		break;
@@ -1063,3 +1066,46 @@ bool CMemComm::ReadRPKOffset()
 	return bReturn;
 }
 
+//---------------------------------------------------------------//
+// Line scan trigger
+//
+// The recipe goes out as one block. SEQ validates it and recomputes the
+// display values on receipt, so follow a write with a read to see what it
+// made of the numbers.
+bool CMemComm::WriteScanTriggerRecipe()
+{
+	TMemCommand membuffer;
+
+	membuffer.Command = CMD_WRITE_SCANTRIGGER_RECIPE;
+	memcpy(&membuffer.Arg.ScanTriggerRecipe, &WScanTriggerRecipe, sizeof(WScanTriggerRecipe));
+
+	MemPort(membuffer);
+	return bReturn;
+}
+
+bool CMemComm::ReadScanTriggerDisplay()
+{
+	TMemCommand membuffer;
+
+	membuffer.Command = CMD_READ_SCANTRIGGER_DISPLAY;
+	MemPort(membuffer);
+	return bReturn;
+}
+
+bool CMemComm::WriteScanTriggerStart()
+{
+	TMemCommand membuffer;
+
+	membuffer.Command = CMD_WRITE_SCANTRIGGER_START;
+	MemPort(membuffer);
+	return bReturn;
+}
+
+bool CMemComm::WriteScanTriggerStop()
+{
+	TMemCommand membuffer;
+
+	membuffer.Command = CMD_WRITE_SCANTRIGGER_STOP;
+	MemPort(membuffer);
+	return bReturn;
+}

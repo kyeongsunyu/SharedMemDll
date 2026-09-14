@@ -1138,4 +1138,55 @@ bool CSharedMemory::SetPkAutoCal()
 	return  memcomm->WritePKAutoCal();
 }
 
+//---------------------------------------------------------------//
+// Line scan trigger
+bool CSharedMemory::SetScanTriggerRecipe()
+{
+	if (memcomm == nullptr) return false;
 
+	memcomm->WScanTriggerRecipe.uAxisNo    = WScanTriggerRecipe->uAxisNo;
+	memcomm->WScanTriggerRecipe.dTrigStart = WScanTriggerRecipe->dTrigStart;
+	memcomm->WScanTriggerRecipe.dTrigEnd   = WScanTriggerRecipe->dTrigEnd;
+	memcomm->WScanTriggerRecipe.dPitch     = WScanTriggerRecipe->dPitch;
+	memcomm->WScanTriggerRecipe.dLineRate  = WScanTriggerRecipe->dLineRate;
+	memcomm->WScanTriggerRecipe.dAccel     = WScanTriggerRecipe->dAccel;
+	memcomm->WScanTriggerRecipe.dDecel     = WScanTriggerRecipe->dDecel;
+	memcomm->WScanTriggerRecipe.nDirection = WScanTriggerRecipe->nDirection;
+	memset(memcomm->WScanTriggerRecipe.uReserved, 0,
+		   sizeof(memcomm->WScanTriggerRecipe.uReserved));
+
+	return memcomm->WriteScanTriggerRecipe();
+}
+
+bool CSharedMemory::GetScanTriggerDisplay()
+{
+	if (memcomm == nullptr) return false;
+
+	bool bRet = memcomm->ReadScanTriggerDisplay();
+
+	RScanTriggerDisplay->dSpeed          = memcomm->RScanTriggerDisplay.dSpeed;
+	RScanTriggerDisplay->dLineRate       = memcomm->RScanTriggerDisplay.dLineRate;
+	RScanTriggerDisplay->nLineCount      = memcomm->RScanTriggerDisplay.nLineCount;
+	RScanTriggerDisplay->dScanTime       = memcomm->RScanTriggerDisplay.dScanTime;
+	RScanTriggerDisplay->dMotionStart    = memcomm->RScanTriggerDisplay.dMotionStart;
+	RScanTriggerDisplay->dMotionEnd      = memcomm->RScanTriggerDisplay.dMotionEnd;
+	RScanTriggerDisplay->dPitchCounts    = memcomm->RScanTriggerDisplay.dPitchCounts;
+	RScanTriggerDisplay->bPitchIsInteger = memcomm->RScanTriggerDisplay.bPitchIsInteger;
+	RScanTriggerDisplay->nValidateCode   = memcomm->RScanTriggerDisplay.nValidateCode;
+	RScanTriggerDisplay->nState          = memcomm->RScanTriggerDisplay.nState;
+	RScanTriggerDisplay->nTriggerCount   = memcomm->RScanTriggerDisplay.nTriggerCount;
+
+	return bRet;
+}
+
+bool CSharedMemory::SetScanTriggerStart()
+{
+	if (memcomm == nullptr) return false;
+	return memcomm->WriteScanTriggerStart();
+}
+
+bool CSharedMemory::SetScanTriggerStop()
+{
+	if (memcomm == nullptr) return false;
+	return memcomm->WriteScanTriggerStop();
+}

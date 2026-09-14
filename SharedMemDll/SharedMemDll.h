@@ -236,6 +236,40 @@ namespace SharedMemDll
 		bool bTenKeyJog;
 	};
 
+	// Line scan trigger. Mirrors _scantriggerrecipe / _scantriggerdisplay in
+	// SharedMemBase.h; keep the field order in step with those.
+	public ref struct SCANTRIGGER_RECIPE
+	{
+		unsigned int uAxisNo;
+		double dTrigStart;      // mm, absolute
+		double dTrigEnd;        // mm, absolute
+		double dPitch;          // mm
+		double dLineRate;       // Hz
+
+		// Reserved for a later approach profile.
+		double dAccel;
+		double dDecel;
+		int    nDirection;
+	};
+
+	// All computed by SEQ. nValidateCode is 0 when the recipe can be run; any
+	// other value is a refusal reason from the SCANTRIGGER_VALIDATE list.
+	public ref struct SCANTRIGGER_DISPLAY
+	{
+		double dSpeed;          // mm/s
+		double dLineRate;       // Hz
+		int    nLineCount;
+		double dScanTime;       // s
+		double dMotionStart;    // mm
+		double dMotionEnd;      // mm
+
+		double dPitchCounts;
+		bool   bPitchIsInteger;
+		int    nValidateCode;
+		int    nState;
+		int    nTriggerCount;   // -1 when the counter cannot be read back
+	};
+
 	public ref struct SET_3POINT
 	{
 		int pktype;
@@ -454,6 +488,9 @@ namespace SharedMemDll
 		PK_CENTER_OFFSET^	R_RPk_CenOffset;
 		PK_CENTER_OFFSET^	W_RPk_CenOffset;
 
+		SCANTRIGGER_RECIPE^  WScanTriggerRecipe;
+		SCANTRIGGER_DISPLAY^ RScanTriggerDisplay;
+
 
 	public:
 		CSharedMemory()
@@ -509,6 +546,9 @@ namespace SharedMemDll
 			RSet3Point = gcnew SET_3POINT();
 
 			WTenkeyJog = gcnew TENKEY_JOG();
+
+			WScanTriggerRecipe  = gcnew SCANTRIGGER_RECIPE();
+			RScanTriggerDisplay = gcnew SCANTRIGGER_DISPLAY();
 
 			RFlip1VisionResult = gcnew FLIP1_VISION_RESULT();
 			WFlip1VisionResult = gcnew FLIP1_VISION_RESULT();
@@ -764,5 +804,13 @@ namespace SharedMemDll
 		bool GetFrontPkCenOffset();
 		bool GetRearPkCenOffset();
 		bool SetPkAutoCal();
+
+		// Line scan trigger. SetScanTriggerRecipe() sends WScanTriggerRecipe and
+		// GetScanTriggerDisplay() fills RScanTriggerDisplay; call the second after
+		// the first to see how SEQ judged the values.
+		bool SetScanTriggerRecipe();
+		bool GetScanTriggerDisplay();
+		bool SetScanTriggerStart();
+		bool SetScanTriggerStop();
 	};
 }

@@ -43,6 +43,8 @@ public:
 	_goodtray2visionresult	RGoodTray2VisionResult, WGoodTray2VisionResult;
 	_reworktrayvisionresult RReworkTrayVisionResult, WReworkTrayVisionResult;
 	_ngtrayresult			RNGTrayVisionResult, WNGTrayVisionResult;
+	_scantriggerrecipe		WScanTriggerRecipe;
+	_scantriggerdisplay		RScanTriggerDisplay;
 	_flip1map			RFlip1Map, WFlip1Map;
 	_flip2map			RFlip2Map, WFlip2Map;
 	_pallet1map			RPallet1Map, WPallet1Map;
@@ -194,5 +196,11 @@ public:
 	bool WritePKAutoCal();
 	bool ReadFPKOffset();
 	bool ReadRPKOffset();
+
+	// Line scan trigger
+	bool WriteScanTriggerRecipe();
+	bool ReadScanTriggerDisplay();
+	bool WriteScanTriggerStart();
+	bool WriteScanTriggerStop();
 };
 
