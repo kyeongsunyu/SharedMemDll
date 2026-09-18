@@ -202,5 +202,6 @@ public:
 	bool ReadScanTriggerDisplay();
 	bool WriteScanTriggerStart();
 	bool WriteScanTriggerStop();
+	bool WriteScanTriggerTest();
 };
 

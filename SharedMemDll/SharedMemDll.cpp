@@ -1190,3 +1190,9 @@ bool CSharedMemory::SetScanTriggerStop()
 	if (memcomm == nullptr) return false;
 	return memcomm->WriteScanTriggerStop();
 }
+
+bool CSharedMemory::SetScanTriggerTest()
+{
+	if (memcomm == nullptr) return false;
+	return memcomm->WriteScanTriggerTest();
+}

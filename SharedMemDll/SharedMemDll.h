@@ -812,5 +812,8 @@ namespace SharedMemDll
 		bool GetScanTriggerDisplay();
 		bool SetScanTriggerStart();
 		bool SetScanTriggerStop();
+		// Commissioning: makes SEQ drive the trigger output pin directly so it
+		// can be probed. Moves nothing and needs no recipe.
+		bool SetScanTriggerTest();
 	};
 }

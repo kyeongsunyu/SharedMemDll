@@ -1109,3 +1109,12 @@ bool CMemComm::WriteScanTriggerStop()
 	MemPort(membuffer);
 	return bReturn;
 }
+
+bool CMemComm::WriteScanTriggerTest()
+{
+	TMemCommand membuffer;
+
+	membuffer.Command = CMD_WRITE_SCANTRIGGER_TEST;
+	MemPort(membuffer);
+	return bReturn;
+}
