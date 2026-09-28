@@ -1148,7 +1148,8 @@ bool CSharedMemory::SetScanTriggerRecipe()
 	memcomm->WScanTriggerRecipe.dTrigStart = WScanTriggerRecipe->dTrigStart;
 	memcomm->WScanTriggerRecipe.dTrigEnd   = WScanTriggerRecipe->dTrigEnd;
 	memcomm->WScanTriggerRecipe.dPitch     = WScanTriggerRecipe->dPitch;
-	memcomm->WScanTriggerRecipe.dLineRate  = WScanTriggerRecipe->dLineRate;
+	memcomm->WScanTriggerRecipe.dSpeed     = WScanTriggerRecipe->dSpeed;
+	memcomm->WScanTriggerRecipe.dPulseWidthUS = WScanTriggerRecipe->dPulseWidthUS;
 	memcomm->WScanTriggerRecipe.dAccel     = WScanTriggerRecipe->dAccel;
 	memcomm->WScanTriggerRecipe.dDecel     = WScanTriggerRecipe->dDecel;
 	memcomm->WScanTriggerRecipe.nDirection = WScanTriggerRecipe->nDirection;

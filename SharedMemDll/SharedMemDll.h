@@ -244,7 +244,10 @@ namespace SharedMemDll
 		double dTrigStart;      // mm, absolute
 		double dTrigEnd;        // mm, absolute
 		double dPitch;          // mm
-		double dLineRate;       // Hz
+		double dSpeed;          // mm/s, entered - the line rate is derived from
+		                        //       this and the pitch and comes back in
+		                        //       SCANTRIGGER_DISPLAY
+		double dPulseWidthUS;   // us,   entered - what the camera needs
 
 		// Reserved for a later approach profile.
 		double dAccel;
@@ -256,8 +259,8 @@ namespace SharedMemDll
 	// other value is a refusal reason from the SCANTRIGGER_VALIDATE list.
 	public ref struct SCANTRIGGER_DISPLAY
 	{
-		double dSpeed;          // mm/s
-		double dLineRate;       // Hz
+		double dSpeed;          // mm/s, echoed back
+		double dLineRate;       // Hz,   derived = speed / pitch
 		int    nLineCount;
 		double dScanTime;       // s
 		double dMotionStart;    // mm
