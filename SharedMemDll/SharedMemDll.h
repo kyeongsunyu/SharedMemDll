@@ -241,8 +241,8 @@ namespace SharedMemDll
 	public ref struct SCANTRIGGER_RECIPE
 	{
 		unsigned int uAxisNo;
-		double dTrigStart;      // mm, absolute
-		double dTrigEnd;        // mm, absolute
+		// No positions here: they are motor index table entries 50..53, which
+		// the motor screen edits and MOTOR_COMMON stores.
 		double dPitch;          // mm
 		double dSpeed;          // mm/s, entered - the line rate is derived from
 		                        //       this and the pitch and comes back in
@@ -263,8 +263,10 @@ namespace SharedMemDll
 		double dLineRate;       // Hz,   derived = speed / pitch
 		int    nLineCount;
 		double dScanTime;       // s
-		double dMotionStart;    // mm
-		double dMotionEnd;      // mm
+		double dMotionStart;    // mm, index 50
+		double dMotionEnd;      // mm, index 53
+		double dTrigStart;      // mm, index 51
+		double dTrigEnd;        // mm, index 52
 
 		double dPitchCounts;
 		bool   bPitchIsInteger;

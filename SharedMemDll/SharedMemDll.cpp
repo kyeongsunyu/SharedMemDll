@@ -1145,8 +1145,6 @@ bool CSharedMemory::SetScanTriggerRecipe()
 	if (memcomm == nullptr) return false;
 
 	memcomm->WScanTriggerRecipe.uAxisNo    = WScanTriggerRecipe->uAxisNo;
-	memcomm->WScanTriggerRecipe.dTrigStart = WScanTriggerRecipe->dTrigStart;
-	memcomm->WScanTriggerRecipe.dTrigEnd   = WScanTriggerRecipe->dTrigEnd;
 	memcomm->WScanTriggerRecipe.dPitch     = WScanTriggerRecipe->dPitch;
 	memcomm->WScanTriggerRecipe.dSpeed     = WScanTriggerRecipe->dSpeed;
 	memcomm->WScanTriggerRecipe.dPulseWidthUS = WScanTriggerRecipe->dPulseWidthUS;
@@ -1171,6 +1169,8 @@ bool CSharedMemory::GetScanTriggerDisplay()
 	RScanTriggerDisplay->dScanTime       = memcomm->RScanTriggerDisplay.dScanTime;
 	RScanTriggerDisplay->dMotionStart    = memcomm->RScanTriggerDisplay.dMotionStart;
 	RScanTriggerDisplay->dMotionEnd      = memcomm->RScanTriggerDisplay.dMotionEnd;
+	RScanTriggerDisplay->dTrigStart      = memcomm->RScanTriggerDisplay.dTrigStart;
+	RScanTriggerDisplay->dTrigEnd        = memcomm->RScanTriggerDisplay.dTrigEnd;
 	RScanTriggerDisplay->dPitchCounts    = memcomm->RScanTriggerDisplay.dPitchCounts;
 	RScanTriggerDisplay->bPitchIsInteger = memcomm->RScanTriggerDisplay.bPitchIsInteger;
 	RScanTriggerDisplay->nValidateCode   = memcomm->RScanTriggerDisplay.nValidateCode;
