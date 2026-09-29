@@ -1180,6 +1180,34 @@ bool CSharedMemory::GetScanTriggerDisplay()
 	return bRet;
 }
 
+bool CSharedMemory::GetScanTriggerLog()
+{
+	if (memcomm == nullptr) return false;
+
+	bool bRet = memcomm->ReadScanTriggerLog();
+
+	RScanTriggerLog->uSeq      = memcomm->RScanTriggerLog.uSeq;
+	RScanTriggerLog->uCount    = memcomm->RScanTriggerLog.uCount;
+	RScanTriggerLog->uFirstSeq = memcomm->RScanTriggerLog.uFirstSeq;
+
+	for (int i = 0; i < SCANTRIGGER_LOG_LINES; i++)
+	{
+		// The block is fixed size and only the first uCount lines mean
+		// anything, but convert them all: a stale line left in the array from a
+		// longer log would otherwise be read as part of this one.
+		RScanTriggerLog->sLine[i] =
+			gcnew System::String(memcomm->RScanTriggerLog.szLine[i]);
+	}
+
+	return bRet;
+}
+
+bool CSharedMemory::SetScanTriggerLogClear()
+{
+	if (memcomm == nullptr) return false;
+	return memcomm->WriteScanTriggerLogClear();
+}
+
 bool CSharedMemory::SetScanTriggerStart()
 {
 	if (memcomm == nullptr) return false;

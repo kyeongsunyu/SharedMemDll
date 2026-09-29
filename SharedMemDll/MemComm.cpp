@@ -116,6 +116,9 @@ void CMemComm::Decode()
 	case CMD_READ_SCANTRIGGER_DISPLAY:
 		RScanTriggerDisplay = RxBuffer.Arg.ScanTriggerDisplay;
 		break;
+	case CMD_READ_SCANTRIGGER_LOG:
+		RScanTriggerLog = RxBuffer.Arg.ScanTriggerLog;
+		break;
 	case CMD_READ_3POINT_OFFSET:
 		RSet3Point = RxBuffer.Arg.Set3Point;
 		break;
@@ -1088,6 +1091,24 @@ bool CMemComm::ReadScanTriggerDisplay()
 	TMemCommand membuffer;
 
 	membuffer.Command = CMD_READ_SCANTRIGGER_DISPLAY;
+	MemPort(membuffer);
+	return bReturn;
+}
+
+bool CMemComm::ReadScanTriggerLog()
+{
+	TMemCommand membuffer;
+
+	membuffer.Command = CMD_READ_SCANTRIGGER_LOG;
+	MemPort(membuffer);
+	return bReturn;
+}
+
+bool CMemComm::WriteScanTriggerLogClear()
+{
+	TMemCommand membuffer;
+
+	membuffer.Command = CMD_WRITE_SCANTRIGGER_LOG_CLEAR;
 	MemPort(membuffer);
 	return bReturn;
 }
