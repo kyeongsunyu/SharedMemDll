@@ -275,25 +275,6 @@ namespace SharedMemDll
 		int    nTriggerCount;   // -1 when the counter cannot be read back
 	};
 
-	// The scan cycle's own log lines, so the AUTO screen can show what the
-	// console shows. Mirrors _scantriggerlog.
-	//
-	// sLine holds the lines SEQ still has, oldest first, in sLine[0..uCount-1];
-	// the rest are empty. uFirstSeq is the sequence number of sLine[0] and uSeq
-	// is how many lines have been written since SEQ started, so a reader that
-	// remembers uSeq can append only what is new - and can tell that the ring
-	// overwrote lines it never collected, because uFirstSeq has moved past the
-	// number it was waiting for.
-	public ref struct SCANTRIGGER_LOG
-	{
-		unsigned int uSeq;
-		unsigned int uCount;
-		unsigned int uFirstSeq;
-
-		array<System::String^>^ sLine =
-			gcnew array<System::String^>(SCANTRIGGER_LOG_LINES);
-	};
-
 	public ref struct SET_3POINT
 	{
 		int pktype;
@@ -514,7 +495,6 @@ namespace SharedMemDll
 
 		SCANTRIGGER_RECIPE^  WScanTriggerRecipe;
 		SCANTRIGGER_DISPLAY^ RScanTriggerDisplay;
-		SCANTRIGGER_LOG^     RScanTriggerLog;
 
 
 	public:
@@ -574,7 +554,6 @@ namespace SharedMemDll
 
 			WScanTriggerRecipe  = gcnew SCANTRIGGER_RECIPE();
 			RScanTriggerDisplay = gcnew SCANTRIGGER_DISPLAY();
-			RScanTriggerLog     = gcnew SCANTRIGGER_LOG();
 
 			RFlip1VisionResult = gcnew FLIP1_VISION_RESULT();
 			WFlip1VisionResult = gcnew FLIP1_VISION_RESULT();
@@ -841,9 +820,5 @@ namespace SharedMemDll
 		// Commissioning: makes SEQ drive the trigger output pin directly so it
 		// can be probed. Moves nothing and needs no recipe.
 		bool SetScanTriggerTest();
-		// GetScanTriggerLog() fills RScanTriggerLog with the lines SEQ still
-		// holds; SetScanTriggerLogClear() throws SEQ's copy away.
-		bool GetScanTriggerLog();
-		bool SetScanTriggerLogClear();
 	};
 }

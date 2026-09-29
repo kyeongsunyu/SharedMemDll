@@ -45,7 +45,6 @@ public:
 	_ngtrayresult			RNGTrayVisionResult, WNGTrayVisionResult;
 	_scantriggerrecipe		WScanTriggerRecipe;
 	_scantriggerdisplay		RScanTriggerDisplay;
-	_scantriggerlog			RScanTriggerLog;
 	_flip1map			RFlip1Map, WFlip1Map;
 	_flip2map			RFlip2Map, WFlip2Map;
 	_pallet1map			RPallet1Map, WPallet1Map;
@@ -204,7 +203,5 @@ public:
 	bool WriteScanTriggerStart();
 	bool WriteScanTriggerStop();
 	bool WriteScanTriggerTest();
-	bool ReadScanTriggerLog();
-	bool WriteScanTriggerLogClear();
 };
 
