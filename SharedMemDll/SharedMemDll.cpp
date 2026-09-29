@@ -1148,6 +1148,7 @@ bool CSharedMemory::SetScanTriggerRecipe()
 	memcomm->WScanTriggerRecipe.dPitch     = WScanTriggerRecipe->dPitch;
 	memcomm->WScanTriggerRecipe.dSpeed     = WScanTriggerRecipe->dSpeed;
 	memcomm->WScanTriggerRecipe.dPulseWidthUS = WScanTriggerRecipe->dPulseWidthUS;
+	memcomm->WScanTriggerRecipe.uTriggerMode  = WScanTriggerRecipe->uTriggerMode;
 	memcomm->WScanTriggerRecipe.dAccel     = WScanTriggerRecipe->dAccel;
 	memcomm->WScanTriggerRecipe.dDecel     = WScanTriggerRecipe->dDecel;
 	memcomm->WScanTriggerRecipe.nDirection = WScanTriggerRecipe->nDirection;
@@ -1176,6 +1177,10 @@ bool CSharedMemory::GetScanTriggerDisplay()
 	RScanTriggerDisplay->nValidateCode   = memcomm->RScanTriggerDisplay.nValidateCode;
 	RScanTriggerDisplay->nState          = memcomm->RScanTriggerDisplay.nState;
 	RScanTriggerDisplay->nTriggerCount   = memcomm->RScanTriggerDisplay.nTriggerCount;
+	RScanTriggerDisplay->nTriggerMode    = memcomm->RScanTriggerDisplay.nTriggerMode;
+	RScanTriggerDisplay->dPitchAchieved  = memcomm->RScanTriggerDisplay.dPitchAchieved;
+	RScanTriggerDisplay->dPitchErrorNM   = memcomm->RScanTriggerDisplay.dPitchErrorNM;
+	RScanTriggerDisplay->dSpeedAdjusted  = memcomm->RScanTriggerDisplay.dSpeedAdjusted;
 
 	return bRet;
 }

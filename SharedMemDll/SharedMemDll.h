@@ -249,6 +249,12 @@ namespace SharedMemDll
 		                        //       SCANTRIGGER_DISPLAY
 		double dPulseWidthUS;   // us,   entered - what the camera needs
 
+		// 0 = PERIODIC, the encoder gates the output and the pitch is a whole
+		//     number of encoder counts - 18.1 um with a 1 um encoder is refused
+		// 1 = TIMER, a free running oscillator, so any pitch can be asked for,
+		//     but it holds only while the stage holds its speed
+		unsigned int uTriggerMode;
+
 		// Reserved for a later approach profile.
 		double dAccel;
 		double dDecel;
@@ -273,6 +279,16 @@ namespace SharedMemDll
 		int    nValidateCode;
 		int    nState;
 		int    nTriggerCount;   // -1 when the counter cannot be read back
+
+		// What the chosen mode can actually deliver. In timer mode SEQ rounds
+		// the rate to a whole Hz and trims the speed to suit, so dPitchErrorNM
+		// comes back 0 and dSpeedAdjusted says what the stage will really run
+		// at; in periodic mode the pitch rounds to the encoder step and
+		// dPitchErrorNM is what that costs, every line, in one direction.
+		int    nTriggerMode;
+		double dPitchAchieved;  // mm
+		double dPitchErrorNM;   // nm, achieved - requested
+		double dSpeedAdjusted;  // mm/s
 	};
 
 	public ref struct SET_3POINT
