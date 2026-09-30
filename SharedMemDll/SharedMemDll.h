@@ -289,6 +289,14 @@ namespace SharedMemDll
 		double dPitchAchieved;  // mm
 		double dPitchErrorNM;   // nm, achieved - requested
 		double dSpeedAdjusted;  // mm/s
+
+		// The recipe SEQ computed all of the above from, echoed straight back.
+		// Everything else here is derived, so without this the panel cannot
+		// tell its own recipe's answer from the answer to a recipe SEQ still
+		// holds because a SET never landed.
+		double dRecipePitch;    // mm
+		double dRecipeSpeed;    // mm/s
+		double dRecipePulseUS;  // us
 	};
 
 	public ref struct SET_3POINT

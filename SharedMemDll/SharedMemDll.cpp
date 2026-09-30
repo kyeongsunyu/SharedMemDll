@@ -1181,6 +1181,9 @@ bool CSharedMemory::GetScanTriggerDisplay()
 	RScanTriggerDisplay->dPitchAchieved  = memcomm->RScanTriggerDisplay.dPitchAchieved;
 	RScanTriggerDisplay->dPitchErrorNM   = memcomm->RScanTriggerDisplay.dPitchErrorNM;
 	RScanTriggerDisplay->dSpeedAdjusted  = memcomm->RScanTriggerDisplay.dSpeedAdjusted;
+	RScanTriggerDisplay->dRecipePitch    = memcomm->RScanTriggerDisplay.dRecipePitch;
+	RScanTriggerDisplay->dRecipeSpeed    = memcomm->RScanTriggerDisplay.dRecipeSpeed;
+	RScanTriggerDisplay->dRecipePulseUS  = memcomm->RScanTriggerDisplay.dRecipePulseUS;
 
 	return bRet;
 }
