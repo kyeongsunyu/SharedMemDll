@@ -1219,6 +1219,43 @@ static void CopyHwCfg(const _scantriggerhwcfg& src, SCANTRIGGER_HWCFG^ dst)
 	dst->nResult         = src.nResult;
 }
 
+//////////////////////////////////////////////////////////////////////////
+// SEQ -> MMI events
+//////////////////////////////////////////////////////////////////////////
+bool CSharedMemory::WaitSeqEvent(int nMilliseconds)
+{
+	if (seqevent == nullptr) return false;
+	// SEQ may make the ring after MMI started; try again until it is there.
+	if (!seqevent->IsOpen() && !seqevent->Open(true))
+	{
+		Sleep(nMilliseconds > 0 ? nMilliseconds : 0);
+		return false;
+	}
+	return seqevent->Wait(nMilliseconds > 0 ? (DWORD)nMilliseconds : 0);
+}
+
+bool CSharedMemory::GetSeqEvent(SEQ_EVENT^ ev)
+{
+	if (seqevent == nullptr || ev == nullptr) return false;
+
+	_seqevent e;
+	if (!seqevent->Pop(e)) return false;
+
+	ev->uSerial = e.dwSerial;
+	ev->nCode   = (int)e.dwCode;
+	ev->uTick   = e.dwTick;
+	for (int i = 0; i < 4; i++) ev->nArg[i] = e.nArg[i];
+	e.strText[SEQ_EVENT_TEXT_LEN - 1] = '\0';
+	ev->strText = gcnew System::String(e.strText);
+	return true;
+}
+
+int CSharedMemory::GetSeqEventLost()
+{
+	if (seqevent == nullptr) return 0;
+	return (int)seqevent->Lost();
+}
+
 bool CSharedMemory::GetScanTriggerCounter()
 {
 	if (memcomm == nullptr) return false;

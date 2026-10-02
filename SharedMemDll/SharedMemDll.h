@@ -330,6 +330,16 @@ namespace SharedMemDll
 		int    nState;
 	};
 
+	// One SEQ -> MMI event. Mirrors _seqevent; nCode is SEQ_EVENT_CODE.
+	public ref struct SEQ_EVENT
+	{
+		unsigned int uSerial;
+		int          nCode;
+		unsigned int uTick;
+		array<int>^  nArg = gcnew array<int>(4);
+		System::String^ strText;
+	};
+
 	public ref struct SET_3POINT
 	{
 		int pktype;
@@ -453,6 +463,7 @@ namespace SharedMemDll
 	{
 	private:
 		static CMemComm* memcomm;
+		static SEQ_EVENT_CHANNEL* seqevent;
 	public:
 		MotorStatus^ RMTStatus;
 
@@ -560,6 +571,8 @@ namespace SharedMemDll
 		CSharedMemory()
 		{
 			memcomm = new CMemComm();
+			seqevent = new SEQ_EVENT_CHANNEL();
+			seqevent->Open(true);
 
 			RMTStatus = gcnew MotorStatus();
 
@@ -893,5 +906,13 @@ namespace SharedMemDll
 		bool GetScanTriggerHwCfg();
 		bool SetScanTriggerHwCfg();
 		bool SetScanTriggerCntClr(int nMode);
+
+		// SEQ -> MMI events (SEQ_EVENT_CHANNEL in SharedMemBase.h).
+		// WaitSeqEvent() blocks until SEQ pushes or the time runs out;
+		// GetSeqEvent() takes the oldest unread event, false when none.
+		// One MMI thread should do both.
+		bool WaitSeqEvent(int nMilliseconds);
+		bool GetSeqEvent(SEQ_EVENT^ ev);
+		int  GetSeqEventLost();
 	};
 }
