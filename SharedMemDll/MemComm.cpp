@@ -116,6 +116,17 @@ void CMemComm::Decode()
 	case CMD_READ_SCANTRIGGER_DISPLAY:
 		RScanTriggerDisplay = RxBuffer.Arg.ScanTriggerDisplay;
 		break;
+	case CMD_READ_SCANTRIGGER_COUNTER:
+		RScanTriggerCounter = RxBuffer.Arg.ScanTriggerCounter;
+		break;
+	// A settings write is answered with the settings SEQ now holds.
+	case CMD_READ_SCANTRIGGER_HWCFG:
+	case CMD_WRITE_SCANTRIGGER_HWCFG:
+		RScanTriggerHwCfg = RxBuffer.Arg.ScanTriggerHwCfg;
+		break;
+	case CMD_WRITE_SCANTRIGGER_CNTCLR:
+		RScanTriggerCntClr = RxBuffer.Arg.ScanTriggerCntClr;
+		break;
 	case CMD_READ_3POINT_OFFSET:
 		RSet3Point = RxBuffer.Arg.Set3Point;
 		break;
@@ -1115,6 +1126,46 @@ bool CMemComm::WriteScanTriggerTest()
 	TMemCommand membuffer;
 
 	membuffer.Command = CMD_WRITE_SCANTRIGGER_TEST;
+	MemPort(membuffer);
+	return bReturn;
+}
+
+bool CMemComm::ReadScanTriggerCounter()
+{
+	TMemCommand membuffer;
+
+	membuffer.Command = CMD_READ_SCANTRIGGER_COUNTER;
+	MemPort(membuffer);
+	return bReturn;
+}
+
+bool CMemComm::ReadScanTriggerHwCfg()
+{
+	TMemCommand membuffer;
+
+	membuffer.Command = CMD_READ_SCANTRIGGER_HWCFG;
+	MemPort(membuffer);
+	return bReturn;
+}
+
+bool CMemComm::WriteScanTriggerHwCfg()
+{
+	TMemCommand membuffer;
+
+	membuffer.Command = CMD_WRITE_SCANTRIGGER_HWCFG;
+	memcpy(&membuffer.Arg.ScanTriggerHwCfg, &WScanTriggerHwCfg, sizeof(WScanTriggerHwCfg));
+
+	MemPort(membuffer);
+	return bReturn;
+}
+
+bool CMemComm::WriteScanTriggerCntClr()
+{
+	TMemCommand membuffer;
+
+	membuffer.Command = CMD_WRITE_SCANTRIGGER_CNTCLR;
+	memcpy(&membuffer.Arg.ScanTriggerCntClr, &WScanTriggerCntClr, sizeof(WScanTriggerCntClr));
+
 	MemPort(membuffer);
 	return bReturn;
 }

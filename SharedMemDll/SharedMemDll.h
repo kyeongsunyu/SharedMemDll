@@ -299,6 +299,37 @@ namespace SharedMemDll
 		double dRecipePulseUS;  // us
 	};
 
+	// Counter board settings the scan trigger runs with. Mirrors
+	// _scantriggerhwcfg. SEQ answers a write with what it now holds, and
+	// nResult says whether it took it (0), was busy (1) or found a value out
+	// of range (2).
+	public ref struct SCANTRIGGER_HWCFG
+	{
+		int          nChannel;
+		unsigned int uEncoderInput;
+		unsigned int uOutPortMask;      // bit0 = Trigger Out 0
+		double       dEncUnitMM;        // mm per encoder count
+		bool         bEncReverse;
+		unsigned int uTriggerLevel;     // 0 = low active, 1 = high active
+		unsigned int uDirectionCheck;   // 0 = both, 1 = up only, 2 = down only
+		double       dWrongWayCounts;
+		int          nResult;
+	};
+
+	// The counter channel as it is right now. Mirrors _scantriggercounter.
+	public ref struct SCANTRIGGER_COUNTER
+	{
+		bool   bRead;            // the board answered the position read
+		double dEncCount;        // counts
+		double dEncPosMM;        // mm
+		int    nTriggerCount;    // -1 when the board cannot say
+		int    nOutput;          // 1 high, 0 low, -1 unknown
+		double dArmCount;        // counter position at the last arm
+		double dBlockLowerCnt;
+		double dBlockUpperCnt;
+		int    nState;
+	};
+
 	public ref struct SET_3POINT
 	{
 		int pktype;
@@ -519,6 +550,10 @@ namespace SharedMemDll
 
 		SCANTRIGGER_RECIPE^  WScanTriggerRecipe;
 		SCANTRIGGER_DISPLAY^ RScanTriggerDisplay;
+		SCANTRIGGER_HWCFG^   WScanTriggerHwCfg;
+		SCANTRIGGER_HWCFG^   RScanTriggerHwCfg;
+		SCANTRIGGER_COUNTER^ RScanTriggerCounter;
+		int                  nScanTriggerCntClrResult;
 
 
 	public:
@@ -578,6 +613,9 @@ namespace SharedMemDll
 
 			WScanTriggerRecipe  = gcnew SCANTRIGGER_RECIPE();
 			RScanTriggerDisplay = gcnew SCANTRIGGER_DISPLAY();
+			WScanTriggerHwCfg   = gcnew SCANTRIGGER_HWCFG();
+			RScanTriggerHwCfg   = gcnew SCANTRIGGER_HWCFG();
+			RScanTriggerCounter = gcnew SCANTRIGGER_COUNTER();
 
 			RFlip1VisionResult = gcnew FLIP1_VISION_RESULT();
 			WFlip1VisionResult = gcnew FLIP1_VISION_RESULT();
@@ -844,5 +882,16 @@ namespace SharedMemDll
 		// Commissioning: makes SEQ drive the trigger output pin directly so it
 		// can be probed. Moves nothing and needs no recipe.
 		bool SetScanTriggerTest();
+
+		// Engineer screen. GetScanTriggerCounter() fills RScanTriggerCounter.
+		// SetScanTriggerHwCfg() sends WScanTriggerHwCfg and fills
+		// RScanTriggerHwCfg with SEQ's answer; GetScanTriggerHwCfg() only
+		// reads. SetScanTriggerCntClr(0) zeroes the pulse counter and (1) sets
+		// the counter to the axis position; the answer is in
+		// nScanTriggerCntClrResult.
+		bool GetScanTriggerCounter();
+		bool GetScanTriggerHwCfg();
+		bool SetScanTriggerHwCfg();
+		bool SetScanTriggerCntClr(int nMode);
 	};
 }

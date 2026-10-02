@@ -1205,3 +1205,77 @@ bool CSharedMemory::SetScanTriggerTest()
 	if (memcomm == nullptr) return false;
 	return memcomm->WriteScanTriggerTest();
 }
+
+static void CopyHwCfg(const _scantriggerhwcfg& src, SCANTRIGGER_HWCFG^ dst)
+{
+	dst->nChannel        = src.nChannel;
+	dst->uEncoderInput   = src.uEncoderInput;
+	dst->uOutPortMask    = src.uOutPortMask;
+	dst->dEncUnitMM      = src.dEncUnitMM;
+	dst->bEncReverse     = (src.bEncReverse != 0);
+	dst->uTriggerLevel   = src.uTriggerLevel;
+	dst->uDirectionCheck = src.uDirectionCheck;
+	dst->dWrongWayCounts = src.dWrongWayCounts;
+	dst->nResult         = src.nResult;
+}
+
+bool CSharedMemory::GetScanTriggerCounter()
+{
+	if (memcomm == nullptr) return false;
+
+	bool bRet = memcomm->ReadScanTriggerCounter();
+
+	const _scantriggercounter& c = memcomm->RScanTriggerCounter;
+	RScanTriggerCounter->bRead          = (c.bRead != 0);
+	RScanTriggerCounter->dEncCount      = c.dEncCount;
+	RScanTriggerCounter->dEncPosMM      = c.dEncPosMM;
+	RScanTriggerCounter->nTriggerCount  = c.nTriggerCount;
+	RScanTriggerCounter->nOutput        = c.nOutput;
+	RScanTriggerCounter->dArmCount      = c.dArmCount;
+	RScanTriggerCounter->dBlockLowerCnt = c.dBlockLowerCnt;
+	RScanTriggerCounter->dBlockUpperCnt = c.dBlockUpperCnt;
+	RScanTriggerCounter->nState         = c.nState;
+
+	return bRet;
+}
+
+bool CSharedMemory::GetScanTriggerHwCfg()
+{
+	if (memcomm == nullptr) return false;
+
+	bool bRet = memcomm->ReadScanTriggerHwCfg();
+	CopyHwCfg(memcomm->RScanTriggerHwCfg, RScanTriggerHwCfg);
+	return bRet;
+}
+
+bool CSharedMemory::SetScanTriggerHwCfg()
+{
+	if (memcomm == nullptr) return false;
+
+	_scantriggerhwcfg& w = memcomm->WScanTriggerHwCfg;
+	memset(&w, 0, sizeof(w));
+	w.nChannel        = WScanTriggerHwCfg->nChannel;
+	w.uEncoderInput   = WScanTriggerHwCfg->uEncoderInput;
+	w.uOutPortMask    = WScanTriggerHwCfg->uOutPortMask;
+	w.dEncUnitMM      = WScanTriggerHwCfg->dEncUnitMM;
+	w.bEncReverse     = WScanTriggerHwCfg->bEncReverse ? 1 : 0;
+	w.uTriggerLevel   = WScanTriggerHwCfg->uTriggerLevel;
+	w.uDirectionCheck = WScanTriggerHwCfg->uDirectionCheck;
+	w.dWrongWayCounts = WScanTriggerHwCfg->dWrongWayCounts;
+
+	bool bRet = memcomm->WriteScanTriggerHwCfg();
+	CopyHwCfg(memcomm->RScanTriggerHwCfg, RScanTriggerHwCfg);
+	return bRet;
+}
+
+bool CSharedMemory::SetScanTriggerCntClr(int nMode)
+{
+	if (memcomm == nullptr) return false;
+
+	memcomm->WScanTriggerCntClr.nMode   = nMode;
+	memcomm->WScanTriggerCntClr.nResult = 0;
+
+	bool bRet = memcomm->WriteScanTriggerCntClr();
+	nScanTriggerCntClrResult = memcomm->RScanTriggerCntClr.nResult;
+	return bRet;
+}
