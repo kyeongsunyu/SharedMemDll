@@ -565,6 +565,9 @@ namespace SharedMemDll
 		SCANTRIGGER_HWCFG^   RScanTriggerHwCfg;
 		SCANTRIGGER_COUNTER^ RScanTriggerCounter;
 		int                  nScanTriggerCntClrResult;
+		// SEQ's answer to SetScanTriggerVision: what it now holds.
+		bool                 bScanTriggerVisionUse;
+		bool                 bScanTriggerVisionReady;
 
 
 	public:
@@ -906,6 +909,11 @@ namespace SharedMemDll
 		bool GetScanTriggerHwCfg();
 		bool SetScanTriggerHwCfg();
 		bool SetScanTriggerCntClr(int nMode);
+
+		// VISION handshake. bUse makes scans wait at the start position for a
+		// ready; nReady 1 / 0 sets it, -1 leaves it. A ready is good for one
+		// scan. The answer is in bScanTriggerVisionUse / bScanTriggerVisionReady.
+		bool SetScanTriggerVision(bool bUse, int nReady, int nLineCount);
 
 		// SEQ -> MMI events (SEQ_EVENT_CHANNEL in SharedMemBase.h).
 		// WaitSeqEvent() blocks until SEQ pushes or the time runs out;

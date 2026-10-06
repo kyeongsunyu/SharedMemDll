@@ -48,6 +48,7 @@ public:
 	_scantriggerhwcfg		WScanTriggerHwCfg, RScanTriggerHwCfg;
 	_scantriggercounter		RScanTriggerCounter;
 	_scantriggercntclr		WScanTriggerCntClr, RScanTriggerCntClr;
+	_scantriggervision		WScanTriggerVision, RScanTriggerVision;
 	_flip1map			RFlip1Map, WFlip1Map;
 	_flip2map			RFlip2Map, WFlip2Map;
 	_pallet1map			RPallet1Map, WPallet1Map;
@@ -210,5 +211,6 @@ public:
 	bool ReadScanTriggerHwCfg();
 	bool WriteScanTriggerHwCfg();
 	bool WriteScanTriggerCntClr();
+	bool WriteScanTriggerVision();
 };
 

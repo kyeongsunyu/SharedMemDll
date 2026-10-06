@@ -127,6 +127,9 @@ void CMemComm::Decode()
 	case CMD_WRITE_SCANTRIGGER_CNTCLR:
 		RScanTriggerCntClr = RxBuffer.Arg.ScanTriggerCntClr;
 		break;
+	case CMD_WRITE_SCANTRIGGER_VISION:
+		RScanTriggerVision = RxBuffer.Arg.ScanTriggerVision;
+		break;
 	case CMD_READ_3POINT_OFFSET:
 		RSet3Point = RxBuffer.Arg.Set3Point;
 		break;
@@ -1165,6 +1168,17 @@ bool CMemComm::WriteScanTriggerCntClr()
 
 	membuffer.Command = CMD_WRITE_SCANTRIGGER_CNTCLR;
 	memcpy(&membuffer.Arg.ScanTriggerCntClr, &WScanTriggerCntClr, sizeof(WScanTriggerCntClr));
+
+	MemPort(membuffer);
+	return bReturn;
+}
+
+bool CMemComm::WriteScanTriggerVision()
+{
+	TMemCommand membuffer;
+
+	membuffer.Command = CMD_WRITE_SCANTRIGGER_VISION;
+	memcpy(&membuffer.Arg.ScanTriggerVision, &WScanTriggerVision, sizeof(WScanTriggerVision));
 
 	MemPort(membuffer);
 	return bReturn;

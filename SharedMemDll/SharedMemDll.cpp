@@ -1316,3 +1316,18 @@ bool CSharedMemory::SetScanTriggerCntClr(int nMode)
 	nScanTriggerCntClrResult = memcomm->RScanTriggerCntClr.nResult;
 	return bRet;
 }
+
+bool CSharedMemory::SetScanTriggerVision(bool bUse, int nReady, int nLineCount)
+{
+	if (memcomm == nullptr) return false;
+
+	memset(&memcomm->WScanTriggerVision, 0, sizeof(memcomm->WScanTriggerVision));
+	memcomm->WScanTriggerVision.nUse       = bUse ? 1 : 0;
+	memcomm->WScanTriggerVision.nReady     = nReady;
+	memcomm->WScanTriggerVision.nLineCount = nLineCount;
+
+	bool bRet = memcomm->WriteScanTriggerVision();
+	bScanTriggerVisionUse   = (memcomm->RScanTriggerVision.nUse != 0);
+	bScanTriggerVisionReady = (memcomm->RScanTriggerVision.nReady != 0);
+	return bRet;
+}
